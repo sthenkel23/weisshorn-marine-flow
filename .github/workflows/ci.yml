@@ -63,7 +63,7 @@ jobs:
 
     - name: Prefect cloud configuration
       run:  |
-        prefect config set PREFECT_API_URL=""https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE"
+        prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE"
         prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
 
     - name: Login to Prefect Cloud
