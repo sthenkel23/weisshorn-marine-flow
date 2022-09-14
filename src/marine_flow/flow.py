@@ -15,12 +15,11 @@ def parse_fact(response):
     return fact
 
 
-@flow(name="marine-flow")
+@flow(name="weisshorn-marine-flow")
 def marine_flow(url):
     fact_json = call_api(url)
     fact_text = parse_fact(fact_json)
     return fact_text
-
 
 
 if __name__ == "__main__":
