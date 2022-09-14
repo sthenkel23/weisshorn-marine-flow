@@ -2,13 +2,11 @@ import sys
 import requests
 from prefect import flow, task
 
-
 @task
 def call_api(url):
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     print(response.status_code)
     return response.json()
-
 
 @task
 def parse_fact(response):
@@ -24,6 +22,7 @@ def marine_flow(url):
     return fact_text
 
 
+
 if __name__ == "__main__":
-    url = sys.argv[1]
-    marine_flow(url)  # "Hello, World! I'm Marvin!"
+    URL = sys.argv[1]
+    marine_flow(URL)  # "Hello, World! I'm Marvin!"
