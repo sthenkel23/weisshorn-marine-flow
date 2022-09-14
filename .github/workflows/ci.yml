@@ -63,7 +63,7 @@ jobs:
         key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
     - name: Build the pypi python image
       run: |
-        echo $GITHUB_PATH
+        echo "$HOME/.poetry/bin" >> $GITHUB_PATH
         poetry build
     
     - name: Login to Prefect Cloud
