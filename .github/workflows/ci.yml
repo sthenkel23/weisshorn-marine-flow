@@ -37,12 +37,12 @@ jobs:
         key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
     - name: Set Poetry Path
       run: |
-        echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+        echo "$HOME/.poetry/bin" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: |
         make install
-    - name: Format the code with black
+    - name: Check and format style
       run: |
         make check-style
     - name: Analysing the code with pylint
@@ -69,9 +69,6 @@ jobs:
     
     - name: Build Prefect Deployment
       run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_STATE --skip-upload
-      
-    - name: Deploy
-      run: prefect deployment apply ${APP_NAME}-deployment.yaml
     
       
   deploy:
@@ -80,6 +77,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    - name: Release
-      run: echo $PATH
+    - name: Deploy
+      run: prefect deployment apply ${APP_NAME}-deployment.yaml
       

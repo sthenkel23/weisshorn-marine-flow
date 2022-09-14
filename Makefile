@@ -121,7 +121,7 @@ testing:
 	poetry run pytest --cov=src/$(IMAGE) tests/*.py
 
 .PHONY: test
-test: testing check-safety check-style
+test: testing check-style check-safety
 
 
 .PHONY: lint
