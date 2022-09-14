@@ -25,6 +25,11 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Download and install poetry
+      run: |
+        make download-poetry
+        poetry run pip install --upgrade pip
+
     - name: Install dependencies
       run: |
         make install
@@ -51,10 +56,10 @@ jobs:
       run: prefect cloud login --key $PREFECT_API_KEY
     
     - name: Configure workspace
-      run: prefect cloud workspace set --workspace "prefect/"$APP_NAME
+      run: prefect cloud workspace set --workspace "weisshorn/weisshorn-marine"
     
     - name: Build Prefect Deployment
-      run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q test
+      run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q test --skip-upload
       
     - name: Deploy
       run: prefect deployment apply ${APP_NAME}-deployment.yaml
