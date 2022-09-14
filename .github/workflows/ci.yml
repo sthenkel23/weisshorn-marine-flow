@@ -58,6 +58,7 @@ jobs:
         make testing
   
   build:
+    needs: test
     runs-on: ubuntu-latest
     
     steps:
