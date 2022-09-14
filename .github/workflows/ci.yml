@@ -17,7 +17,7 @@ env:
   FLOW_ENTRYPOINT: src.marine_flow.flow:marine_flow
 
 jobs:
-  test-build-deploy:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -77,12 +77,7 @@ jobs:
       run:  |
         prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE"
         prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
-
-    #- name: Login to Prefect Cloud
-    #  run: prefect cloud login -k $PREFECT_API_KEY -w $PREFECT_WORKSPACE
-    
-    - name: Configure workspace
-      run: prefect cloud workspace set --workspace $PREFECT_WORKSPACE
+        prefect cloud workspace set --workspace $PREFECT_WORKSPACE
     
     - name: Build Prefect Deployment
       run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_STATE --skip-upload
