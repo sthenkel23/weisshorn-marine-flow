@@ -24,4 +24,5 @@ def marine_flow(url):
 
 if __name__ == "__main__":
     URL = sys.argv[1]
-    marine_flow(URL)  # "Hello, World! I'm Marvin!"
+    while True:
+        marine_flow(URL)  # "Hello, World! I'm Marvin!"
