@@ -54,7 +54,10 @@ jobs:
         make testing
     - name: Build the poetry python image
       run: poetry build
-    
+      
+    - name: Create profile
+      run: prefect profile create "profile-$APP_NAME"
+
     - name: Login to Prefect Cloud
       run: prefect cloud login -k $PREFECT_API_KEY -w $PREFECT_WORKSPACE
     
