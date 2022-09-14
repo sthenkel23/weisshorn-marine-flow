@@ -56,10 +56,8 @@ jobs:
     - name: Testing python with pytest
       run: |
         make testing
-
-
+  
   build:
-    needs: test
     runs-on: ubuntu-latest
     
     steps:
