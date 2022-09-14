@@ -58,7 +58,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    with:
+      with:
         path: ~/.cache/pypoetry/virtualenvs
         key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
     - name: Build the pypi python image
