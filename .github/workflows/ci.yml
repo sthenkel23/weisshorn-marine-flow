@@ -74,7 +74,10 @@ jobs:
         key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
 
     - name: Build the poetry python image
-      run: poetry build
+      run: |
+        poetry env use python3.10
+        poetry build
+        
 
     - name: Create profile
       run: |
