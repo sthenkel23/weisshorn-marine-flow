@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     - name: Build the poetry python image
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry build
