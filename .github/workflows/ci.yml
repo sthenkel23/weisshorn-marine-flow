@@ -51,6 +51,8 @@ jobs:
     - name: Testing python with pytest
       run: |
         make testing
+    - name: Build the poetry python image
+      run: poetry build
   
   build:
     needs: test
@@ -58,13 +60,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-      with:
-        path: ~/.cache/pypoetry/virtualenvs
-        key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
-    - name: Build the pypi python image
-      run: |
-        echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-        poetry build
     
     - name: Login to Prefect Cloud
       run: prefect cloud login --key $PREFECT_API_KEY
