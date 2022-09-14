@@ -48,10 +48,10 @@ jobs:
       run: poetry build
     
     - name: Login to Prefect Cloud
-    - run: prefect cloud login --key $PREFECT_API_KEY
+      run: prefect cloud login --key $PREFECT_API_KEY
     
     - name: Configure workspace
-    - run: prefect cloud workspace set --workspace "prefect/"$APP_NAME
+      run: prefect cloud workspace set --workspace "prefect/"$APP_NAME
     
     - name: Build Prefect Deployment
       run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q test
