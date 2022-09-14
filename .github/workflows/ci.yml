@@ -53,13 +53,6 @@ jobs:
         make testing
     - name: Build the poetry python image
       run: poetry build
-  
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
     
     - name: Login to Prefect Cloud
       run: prefect cloud login --key $PREFECT_API_KEY
@@ -69,14 +62,15 @@ jobs:
     
     - name: Build Prefect Deployment
       run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_STATE --skip-upload
-    
-      
-  deploy:
-    needs: ["test", "build"]
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
+
     - name: Deploy
       run: prefect deployment apply ${APP_NAME}-deployment.yaml
+      
+  # deploy:
+  #   needs: ["test"]
+  #   runs-on: ubuntu-latest
+    
+  #   steps:
+  #   - uses: actions/checkout@v3
+    
       
