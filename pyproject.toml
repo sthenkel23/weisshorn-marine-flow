@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "marine_flow", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 requests = "^2.28.1"
 prefect = "^2.3.2"
 greenlet = "*"
