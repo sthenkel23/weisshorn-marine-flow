@@ -11,7 +11,8 @@ on:
 env: 
   APP_NAME: marine_flow
   PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
-  PREFECT_WORKSPACE: weisshorn-marine
+  PREFECT_WORKSPACE: "weisshorn/weisshorn-marine"
+  PREFECT_STATE: test
   FLOW_ENTRYPOINT: src.marine_flow.flow:marine_flow
 
 jobs:
@@ -27,9 +28,16 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Download and install poetry
+      run: make download-poetry
+    
+    - name: Set up cache
+      uses: actions/cache@v2.1.5
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+    - name: Set Poetry Path
       run: |
-        make download-poetry
-        poetry run pip install --upgrade pip
+        echo "$HOME/.poetry/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
       run: |
@@ -57,10 +65,10 @@ jobs:
       run: prefect cloud login --key $PREFECT_API_KEY
     
     - name: Configure workspace
-      run: prefect cloud workspace set --workspace "weisshorn/$PREFECT_WORKSPACE"
+      run: prefect cloud workspace set --workspace $PREFECT_WORKSPACE
     
     - name: Build Prefect Deployment
-      run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q test --skip-upload
+      run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_STATE --skip-upload
       
     - name: Deploy
       run: prefect deployment apply ${APP_NAME}-deployment.yaml
