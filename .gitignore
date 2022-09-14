@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 
-# Firebase
-gcl.json
+# Prefect
+*deployment.yaml

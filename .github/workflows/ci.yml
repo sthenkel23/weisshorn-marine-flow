@@ -1,0 +1,71 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Test, CI & Deploy To Cloud
+
+on:
+  push:
+    branches: [ "dev", "main" ]
+  pull_request:
+    branches: [ "dev", "main" ]
+
+env: 
+  APP_NAME: marine_flow
+  PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
+  FLOW_ENTRYPOINT: src.marine_flow.flow:marine_flow
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        make install
+    - name: Format the code with black
+      run: |
+        make check-style
+    - name: Analysing the code with pylint
+      run: |
+        make lint
+    - name: Testing python with pytest
+      run: |
+        make testing
+  
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the pypi python image
+      run: poetry build
+    
+    - name: Login to Prefect Cloud
+    - run: prefect cloud login --key $PREFECT_API_KEY
+    
+    - name: Configure workspace
+    - run: prefect cloud workspace set --workspace "prefect/"$APP_NAME
+    
+    - name: Build Prefect Deployment
+      run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q test
+      
+    - name: Deploy
+      run: prefect deployment apply ${APP_NAME}-deployment.yaml
+    
+      
+  deploy:
+    needs: ["test", "build"]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Release
+      run: echo $PATH
+      
