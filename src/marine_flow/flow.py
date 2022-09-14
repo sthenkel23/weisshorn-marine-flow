@@ -9,20 +9,20 @@ def call_api(url):
     return response.json()
 
 @task
-def parse_fact(response):
-    fact = response["fact"]
-    print(fact)
-    return fact
+def get_price(response):
+    r = response["data"]
+    print(r["amount"])
+    return r["amount"]
 
 
 @flow(name="weisshorn-marine-flow")
 def marine_flow(url):
-    fact_json = call_api(url)
-    fact_text = parse_fact(fact_json)
-    return fact_text
+    r = call_api(url)
+    price = get_price(r)
+    return price
 
 
 if __name__ == "__main__":
-    URL = sys.argv[1]
+    URL = sys.argv[1]  # https://api.coinbase.com/v2/prices/ETH-USD/spot
     while True:
-        marine_flow(URL)  # "Hello, World! I'm Marvin!"
+        marine_flow(URL) 
