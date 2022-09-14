@@ -11,6 +11,7 @@ on:
 env: 
   APP_NAME: marine_flow
   PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
+  PREFECT_WORKSPACE: weisshorn-marine
   FLOW_ENTRYPOINT: src.marine_flow.flow:marine_flow
 
 jobs:
@@ -18,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10"]
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -56,7 +57,7 @@ jobs:
       run: prefect cloud login --key $PREFECT_API_KEY
     
     - name: Configure workspace
-      run: prefect cloud workspace set --workspace "weisshorn/weisshorn-marine"
+      run: prefect cloud workspace set --workspace "weisshorn/$PREFECT_WORKSPACE"
     
     - name: Build Prefect Deployment
       run: prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q test --skip-upload
