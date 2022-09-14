@@ -56,7 +56,7 @@ jobs:
       run: poetry build
     
     - name: Login to Prefect Cloud
-      run: prefect cloud login --key $PREFECT_API_KEY
+      run: prefect cloud login --key $PREFECT_API_KEY --workspace $PREFECT_WORKSPACE
     
     - name: Configure workspace
       run: prefect cloud workspace set --workspace $PREFECT_WORKSPACE
