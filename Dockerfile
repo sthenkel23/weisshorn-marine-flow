@@ -32,4 +32,5 @@ RUN chmod +x ./agent_script.sh
 RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["./agent_script.sh $PREFECT_QUEUE"]
+# ENTRYPOINT ["./agent_script.sh $PREFECT_QUEUE"]
+ENTRYPOINT ["/bin/bash"] CMD ["/agent_script.sh", "$PREFECT_QUEUE"] 
