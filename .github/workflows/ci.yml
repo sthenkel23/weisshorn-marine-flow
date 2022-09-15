@@ -16,7 +16,7 @@ env:
   PREFECT_QUEUE: dev
   PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
-  FLOW_ENTRYPOINT: ./flows.flow:marine_flow
+  FLOW_ENTRYPOINT: flows.flow:marine_flow
   # DOCKER_REGISTRY: weisshorn/marine
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
