@@ -42,20 +42,23 @@ jobs:
     - name: Set Poetry Path
       run: |
         echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-    - name: Install prefect
-      run: pip install prefect
+
     - name: Install dependencies
       run: |
         make install
+
     - name: Check and format style
       run: |
         make check-style
+
     - name: Analysing the code with pylint
       run: |
         make lint
+
     - name: Testing python with pytest
       run: |
         make testing
+
     - name: Build the poetry python image
       run: poetry build
 
@@ -107,11 +110,10 @@ jobs:
 
     - name: Build the Docker images
       run: |
-          echo "IMAGE=$DOCKER_REGISTRY" >> $GITHUB_ENV 
           export IMAGE=${{ env.IMAGE }}
           export VERSION=$VERSION
           # docker-compose build
-          make docker IMAGE=${{ env.IMAGE }} VERSION=$VERSION \
+          make docker IMAGE=$DOCKER_REGISTRY VERSION=$VERSION \
                       PREFECT_API_KEY=$PREFECT_API_KEY \
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE=$PREFECT_WORKSPACE
