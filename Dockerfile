@@ -32,8 +32,8 @@ RUN chmod +x ./agent_script.sh
 # Note running pip as root gives a warning
 RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
-RUN prefect config set $PREFECT_API_URL
-RUN prefect config set PREFECT_API_KEY=$PREFECT_API_KEY
+RUN prefect config set PREFECT_API_URL="$PREFECT_API_URL"
+RUN prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
 
 ENTRYPOINT ["./agent_script.sh $PREFECT_QUEUE"]
 # ENTRYPOINT ["/bin/bash", "-l", "-c"]] 
