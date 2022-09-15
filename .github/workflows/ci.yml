@@ -139,7 +139,7 @@ jobs:
         python-version: "3.x"
     - name: Set environment var needed for Docker
       run: |         
-          echo "IMAGE=registry.heroku.com/$HEROKU_APP_NAME/worker" >> $GITHUB_ENV 
+          echo "IMAGE=registry.heroku.com/$HEROKU_APP_NAME/web" >> $GITHUB_ENV 
       
     - name: Login to DockerHub
       uses: docker/login-action@v2
@@ -173,9 +173,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Heroku Release
-      # run: heroku container:release -a $HEROKU_APP_NAME worker
+      # run: heroku container:release -a $HEROKU_APP_NAME web
       run: |
-        heroku container:release -a $HEROKU_APP_NAME worker
-        heroku container:release -a $HEROKU_APP_NAME worker
+        heroku container:release -a $HEROKU_APP_NAME web
+        heroku container:release -a $HEROKU_APP_NAME web
     
       
