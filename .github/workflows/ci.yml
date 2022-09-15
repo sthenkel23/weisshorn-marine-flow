@@ -21,6 +21,7 @@ env:
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
   VERSION: latest
+  PREFECT_GCS_BLOCK_NAME: gcs-block
 
 jobs:
   test-build:
@@ -125,8 +126,8 @@ jobs:
     # These steps can be done manually for more control over the build process
     - name: Build and Apply Prefect deployments
       run: |
-        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE # -t $PREFECT_TAG -sb gcs/$PREFECT_GCS_BLOCK_NAME
-        prefect deployment apply ./${APP_NAME}-deployment.yaml
+        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply # -sb gcs/$PREFECT_GCS_BLOCK_NAME # -t $PREFECT_TAG
+        # prefect deployment apply ./${APP_NAME}-deployment.yaml
   
   dockerize:
     needs: prefect-deploy
