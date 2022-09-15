@@ -1,15 +1,28 @@
+import sys
+import requests
 from prefect import flow, task
 
+@task
+def call_api(url):
+    response = requests.get(url, timeout=10)
+    print(response.status_code)
+    return response.json()
 
 @task
-def say_hello():
-    print("Hello, World! I'm Marvin!")
+def get_price(response):
+    r = response["data"]
+    print(r["amount"])
+    return r["amount"]
 
 
-@flow(name="marine-flow")
-def marine_flow():
-    say_hello()
+@flow(name="weisshorn-marine-flow-2")
+def marine_flow(url):
+    r = call_api(url)
+    price = get_price(r)
+    return price
 
 
 if __name__ == "__main__":
-    marine_flow()  # "Hello, World! I'm Marvin!"
+    URL = sys.argv[1]  # https://api.coinbase.com/v2/prices/ETH-USD/spot
+    while True:
+        marine_flow(URL) 

@@ -1,6 +1,6 @@
 SHELL := /usr/bin/env bash
 
-IMAGE := marine-flow
+IMAGE := marine_flow
 VERSION := latest
 
 NO_CHECK_FLAG =  || true
@@ -87,16 +87,18 @@ download-poetry:
 
 .PHONY: install
 install:
-	poetry env use python3.10
+	# poetry env use python3.10
 	poetry lock -n
 	poetry install -n
+	
 
 .PHONY: check-safety
 check-safety:
 	poetry check$(POETRY_COMMAND_FLAG) && \
 	poetry run pip check$(PIP_COMMAND_FLAG) && \
-	poetry run safety check --full-report$(SAFETY_COMMAND_FLAG) && \
-	# poetry run bandit -r streamlit_prophet/$(BANDIT_COMMAND_FLAG)
+	poetry run safety check --full-report$(SAFETY_COMMAND_FLAG) 
+# && \
+# poetry run bandit -r marine_flow/$(BANDIT_COMMAND_FLAG)
 
 .PHONY: gitleaks
 gitleaks:
@@ -107,19 +109,25 @@ gitleaks:
 check-style:
 	poetry run black --config pyproject.toml ./$(BLACK_COMMAND_FLAG) && \
 	poetry run darglint -v 2 **/*.py$(DARGLINT_COMMAND_FLAG) && \
-	poetry run isort --settings-path pyproject.toml --check-only **/*.py$(ISORT_COMMAND_FLAG) # && \
-	# poetry run mypy --config-file setup.cfg src tests/**/*.py$(MYPY_COMMAND_FLAG)
+	poetry run isort --settings-path pyproject.toml --check-only **/*.py$(ISORT_COMMAND_FLAG) 
+# && \
+# poetry run mypy --config-file setup.cfg src tests/**/*.py$(MYPY_COMMAND_FLAG)
 
 .PHONY: format-code
 format-code:
 	poetry run pre-commit run
 
-.PHONY: test
-test:
+.PHONY: testing
+testing:
 	poetry run pytest --cov=src/$(IMAGE) tests/*.py
 
+.PHONY: test
+test: testing check-style check-safety
+
+
 .PHONY: lint
-lint: test check-safety check-style
+lint: 
+	poetry run pylint --disable=C src/${IMAGE}/*.py
 
 # Example: make docker VERSION=latest
 # Example: make docker IMAGE=some_name VERSION=0.1.0
