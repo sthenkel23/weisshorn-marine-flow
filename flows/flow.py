@@ -1,8 +1,7 @@
 import sys
 import requests
 from prefect import flow, task
-from prefect.environments.storage import Docker
-flow.storage = Docker(registry_url="weisshorn/marine")
+
 
 @task
 def call_api(url):
