@@ -13,8 +13,11 @@ env:
   PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
   PREFECT_WORKSPACE: weisshorn/weisshorn-marine
   PREFECT_STATE: test
+  PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
-  FLOW_ENTRYPOINT: src.marine_flow.flow:marine_flow
+  FLOW_ENTRYPOINT: flows.flow:marine_flow
+  DOCKER_REGISTRY: weisshorn/marine
+  VERSION: latest
 
 jobs:
   test-build-deploy:
@@ -78,6 +81,46 @@ jobs:
     - name: Deploy
       run: prefect deployment apply ${APP_NAME}-deployment.yaml
       
+  dockerize-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+
+    # use the --no-cache-dir flag to skip install files;
+    # we don't need those for a one-time docker image build
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip --no-cache-dir
+        pip install -r ./flows/requirements.txt --no-cache-dir
+    # These steps can be done manually for more control over the build process
+    - name: Build and Apply Prefect deployments
+      run: |
+        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_STATE -t $PREFECT_TAG  # -sb gcs/$PREFECT_GCS_BLOCK_NAME
+        prefect deployment apply ${APP_NAME}-deployment.yaml
+    - name: Build the Docker images
+      run: |
+          echo "IMAGE=$DOCKER_REGISTRY" >> $GITHUB_ENV 
+          export IMAGE=${{ env.IMAGE }}
+          export VERSION=$VERSION
+          # docker-compose build
+          make docker IMAGE=${{ env.IMAGE }} VERSION=$VERSION \
+                      PREFECT_API_KEY=$PREFECT_API_KEY \
+                      PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
+                      PREFECT_WORKSPACE=$PREFECT_WORKSPACE
+    - name: Build and push
+      # run: heroku container:push -a $HEROKU_APP_NAME web
+      # run: docker push ${{ env.IMAGE }}:$VERSION
+      run: | 
+        docker push ${{ env.IMAGE }}:$VERSION
+
+
+
 
   # deploy:
   #   needs: ["test"]
