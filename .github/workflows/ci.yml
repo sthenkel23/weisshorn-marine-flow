@@ -13,7 +13,7 @@ env:
   PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
   PREFECT_WORKSPACE: weisshorn/weisshorn-marine
   PREFECT_WORKSPACE_ID: ${{ secrets.PREFECT_WORKSPACE_ID }}
-  PREFECT_QUEUE: staging
+  PREFECT_QUEUE: stagingg
   PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
   FLOW_ENTRYPOINT: flows.flow:marine_flow
