@@ -121,7 +121,7 @@ jobs:
       # run: heroku container:push -a $HEROKU_APP_NAME web
       # run: docker push ${{ env.IMAGE }}:$VERSION
       run: | 
-        docker push ${{ env.IMAGE }}:$VERSION
+        docker push $DOCKER_REGISTRY:$VERSION
 
 
 
