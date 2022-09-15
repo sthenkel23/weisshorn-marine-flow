@@ -102,10 +102,16 @@ jobs:
       run: |
         python -m pip install --upgrade pip --no-cache-dir
         pip install -r ./flows/requirements.txt --no-cache-dir
+    - name: Login to Prefect Cloud
+      run: prefect cloud login -k $PREFECT_API_KEY -w $PREFECT_WORKSPACE
+    
+    - name: Configure workspace
+      run: prefect cloud workspace set --workspace $PREFECT_WORKSPACE
+    
     # These steps can be done manually for more control over the build process
     - name: Build and Apply Prefect deployments
       run: |
-        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE -t $PREFECT_TAG  # -sb gcs/$PREFECT_GCS_BLOCK_NAME
+        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE # -t $PREFECT_TAG -sb gcs/$PREFECT_GCS_BLOCK_NAME
         prefect deployment apply ${APP_NAME}-deployment.yaml
     
     - name: Login to DockerHub
