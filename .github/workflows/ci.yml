@@ -13,7 +13,7 @@ env:
   PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
   PREFECT_WORKSPACE: weisshorn/weisshorn-marine
   PREFECT_WORKSPACE_ID: ${{ secrets.PREFECT_WORKSPACE_ID }}
-  PREFECT_QUEUE: stagingg
+  PREFECT_QUEUE: staginggg
   PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
   FLOW_ENTRYPOINT: flows.flow:marine_flow
@@ -113,7 +113,7 @@ jobs:
 
     - name: Prefect cloud configuration
       run:  |
-        prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE_ID"
+        prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspace/$PREFECT_WORKSPACE_ID"
         prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
 
     #- name: Login to Prefect Cloud
