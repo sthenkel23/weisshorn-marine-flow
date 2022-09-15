@@ -13,6 +13,9 @@ ENV PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID
 ARG PREFECT_WORKSPACE
 ENV PREFECT_WORKSPACE=$PREFECT_WORKSPACE
 
+ARG PREFECT_QUEUE
+ENV PREFECT_QUEUE=$PREFECT_QUEUE
+
 ENV PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE"
 
 # Allow statements and log messages to immediately appear in the Knative logs
@@ -30,3 +33,4 @@ RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT ["./agent_script.sh"]
+CMD ["$PREFECT_QUEUE"]

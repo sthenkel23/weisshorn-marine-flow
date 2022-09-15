@@ -138,6 +138,7 @@ docker:
 		   --build-arg PREFECT_API_KEY=${PREFECT_API_KEY} \
 	       --build-arg PREFECT_ACCOUNT_ID=${PREFECT_ACCOUNT_ID} \
 	       --build-arg PREFECT_WORKSPACE=${PREFECT_WORKSPACE} \
+		   --build-arg PREFECT_STATE=${PREFECT_STATE} \
 		-t $(IMAGE):$(VERSION) . \
 		-f ./Dockerfile 
 

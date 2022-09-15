@@ -116,10 +116,10 @@ jobs:
           make docker IMAGE=$DOCKER_REGISTRY VERSION=$VERSION \
                       PREFECT_API_KEY=$PREFECT_API_KEY \
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
-                      PREFECT_WORKSPACE=$PREFECT_WORKSPACE
+                      PREFECT_WORKSPACE=$PREFECT_WORKSPACE \
+                      PREFECT_STATE=$PREFECT_STATE
+    
     - name: Build and push
-      # run: heroku container:push -a $HEROKU_APP_NAME web
-      # run: docker push ${{ env.IMAGE }}:$VERSION
       run: | 
         docker push $DOCKER_REGISTRY:$VERSION
 

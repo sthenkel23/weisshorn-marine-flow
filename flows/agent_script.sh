@@ -5,4 +5,4 @@
 # PREFECT_API_URL
 
 echo 'Starting prefect agent'
-prefect agent start -t etl
+prefect agent start -q $1
