@@ -12,7 +12,7 @@ env:
   APP_NAME: marine_flow
   PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
   PREFECT_WORKSPACE: weisshorn/weisshorn-marine
-  PREFECT_QUEUE: test
+  PREFECT_QUEUE: dev
   PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
   FLOW_ENTRYPOINT: flows.flow:marine_flow
