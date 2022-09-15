@@ -17,6 +17,8 @@ env:
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
   FLOW_ENTRYPOINT: flows.flow:marine_flow
   # DOCKER_REGISTRY: weisshorn/marine
+  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
   VERSION: latest
 
 jobs:
@@ -136,8 +138,6 @@ jobs:
       with:
         python-version: "3.x"
     - name: Set environment var needed for Docker
-      env: 
-         HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
       run: |         
           echo "IMAGE=registry.heroku.com/$HEROKU_APP_NAME/web" >> $GITHUB_ENV 
       
@@ -151,17 +151,24 @@ jobs:
       run: |
           # export VERSION=$VERSION
           # docker-compose build
-          make docker IMAGE=$IMAGE VERSION=$VERSION \
+          make docker IMAGE=${{ env.IMAGE }} VERSION=$VERSION \
                       PREFECT_API_KEY=$PREFECT_API_KEY \
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE=$PREFECT_WORKSPACE \
                       PREFECT_QUEUE=$PREFECT_QUEUE
-    
+
+    - name: Login to Heroku Container registry
+      run: heroku container:login
+
     - name: Build and push
       run: | 
-        docker push $IMAGE:$VERSION
+        docker push ${{ env.IMAGE }}:$VERSION
 
-
+    - name: Heroku Release
+      # run: heroku container:release -a $HEROKU_APP_NAME web
+      run: |
+        heroku container:release -a $HEROKU_APP_NAME web
+        heroku container:release -a $HEROKU_APP_NAME web
 
 
   # deploy:
