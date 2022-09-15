@@ -22,6 +22,7 @@ env:
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
   VERSION: latest
   BLOCK_STORAGE: github-storage
+  
 
 jobs:
   test-build:
