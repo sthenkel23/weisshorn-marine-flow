@@ -107,8 +107,6 @@ jobs:
       run:  |
         prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE"
         prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
-    - name: Login to Prefect Cloud
-      run: prefect cloud login -k $PREFECT_API_KEY -w $PREFECT_WORKSPACE
       
     # These steps can be done manually for more control over the build process
     - name: Build and Apply Prefect deployments
