@@ -140,8 +140,8 @@ docker:
 	       --build-arg PREFECT_WORKSPACE=${PREFECT_WORKSPACE} \
 		   --build-arg PREFECT_QUEUE=${PREFECT_QUEUE} \
 		-t $(IMAGE):$(VERSION) . \
-		-f ./Dockerfile  --platform linux/arm64/v8
-
+		-f ./Dockerfile 
+		
 # Example: make clean_docker VERSION=latest
 # Example: make clean_docker IMAGE=some_name VERSION=0.1.0
 .PHONY: clean_docker

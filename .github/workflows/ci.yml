@@ -16,7 +16,7 @@ env:
   PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
   FLOW_ENTRYPOINT: flows.flow:marine_flow
-  DOCKER_REGISTRY: weisshorn/marine
+  # DOCKER_REGISTRY: weisshorn/marine
   VERSION: latest
 
 jobs:
@@ -135,6 +135,12 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: "3.x"
+    - name: Set environment var needed for Docker
+      env: 
+         HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      run: |         
+          echo "IMAGE=registry.heroku.com/$HEROKU_APP_NAME/web" >> $GITHUB_ENV 
+      
     - name: Login to DockerHub
       uses: docker/login-action@v2
       with:
@@ -145,7 +151,7 @@ jobs:
       run: |
           # export VERSION=$VERSION
           # docker-compose build
-          make docker IMAGE=$DOCKER_REGISTRY VERSION=$VERSION \
+          make docker IMAGE=$IMAGE VERSION=$VERSION \
                       PREFECT_API_KEY=$PREFECT_API_KEY \
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE=$PREFECT_WORKSPACE \
@@ -153,7 +159,7 @@ jobs:
     
     - name: Build and push
       run: | 
-        docker push $DOCKER_REGISTRY:$VERSION
+        docker push $IMAGE:$VERSION
 
 
 
