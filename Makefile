@@ -138,9 +138,9 @@ docker:
 		   --build-arg PREFECT_API_KEY=${PREFECT_API_KEY} \
 	       --build-arg PREFECT_ACCOUNT_ID=${PREFECT_ACCOUNT_ID} \
 	       --build-arg PREFECT_WORKSPACE=${PREFECT_WORKSPACE} \
-		   --build-arg PREFECT_STATE=${PREFECT_STATE} \
+		   --build-arg PREFECT_QUEUE=${PREFECT_QUEUE} \
 		-t $(IMAGE):$(VERSION) . \
-		-f ./Dockerfile 
+		-f ./Dockerfile  --platform linux/amd64
 
 # Example: make clean_docker VERSION=latest
 # Example: make clean_docker IMAGE=some_name VERSION=0.1.0
