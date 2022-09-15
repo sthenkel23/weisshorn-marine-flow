@@ -33,4 +33,4 @@ RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT ["./agent_script.sh"]
-CMD ["$PREFECT_QUEUE"]
+CMD $PREFECT_QUEUE

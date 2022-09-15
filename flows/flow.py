@@ -15,7 +15,7 @@ def get_price(response):
     return r["amount"]
 
 
-@flow(name="weisshorn-marine-flow")
+@flow(name="weisshorn-marine-flow-15sep")
 def marine_flow(url):
     r = call_api(url)
     price = get_price(r)
