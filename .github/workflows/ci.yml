@@ -164,18 +164,18 @@ jobs:
       run: | 
         docker push ${{ env.IMAGE }}:$VERSION
 
+
+
+  heroku-deploy:
+    needs: ["dockerize"]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
     - name: Heroku Release
       # run: heroku container:release -a $HEROKU_APP_NAME web
       run: |
         heroku container:release -a $HEROKU_APP_NAME web
         heroku container:release -a $HEROKU_APP_NAME web
-
-
-  # deploy:
-  #   needs: ["test"]
-  #   runs-on: ubuntu-latest
-    
-  #   steps:
-  #   - uses: actions/checkout@v3
     
       
