@@ -43,7 +43,6 @@ RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
 RUN prefect config set PREFECT_API_URL="$PREFECT_API_URL"
 RUN prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
-RUN echo `ls`
 RUN prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-deployment
 
 ENTRYPOINT ["./agent_script.sh $PREFECT_QUEUE"]
