@@ -13,3 +13,5 @@ venv
 *.egg_info
 # *dist
 pypi_log.txt
+*deployment.yaml
+.prefectignore
