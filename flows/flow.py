@@ -1,11 +1,12 @@
 import sys
 import requests
 from prefect import flow, task
-from prefect.filesystems import GitHub
+# from prefect.filesystems import GitHub
 
-block = GitHub(repository="https://github.com/sthenkel23/weisshorn-marine-flow")
-block.get_directory("deployment") # specify a subfolder of repo
-block.save("github-storage-dev")
+
+# block = GitHub(repository="https://github.com/sthenkel23/weisshorn-marine-flow")
+# block.get_directory("prefect-block") # specify a subfolder of repo
+# block.save("github-storage-dev")
 
 
 @task
