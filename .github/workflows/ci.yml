@@ -89,17 +89,17 @@ jobs:
     # - name: Deploy
     #   run: prefect deployment apply ${APP_NAME}-deployment.yaml
       
-  prefect-deploy:
-    needs: test-build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+  # prefect-deploy:
+  #   needs: test-build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
 
-    - name: Set up Python 3.x
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.x"
+  #   - name: Set up Python 3.x
+  #     uses: actions/setup-python@v4
+  #     with:
+  #       python-version: "3.x"
 
     # use the --no-cache-dir flag to skip install files;
     # we don't need those for a one-time docker image build
@@ -134,7 +134,8 @@ jobs:
         # prefect deployment apply ./${APP_NAME}-deployment.yaml
   
   dockerize:
-    needs: prefect-deploy
+    # needs: prefect-deploy
+    needs: test-build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
