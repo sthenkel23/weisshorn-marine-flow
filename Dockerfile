@@ -37,6 +37,7 @@ RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
 RUN prefect config set PREFECT_API_URL="$PREFECT_API_URL"
 RUN prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
+RUN prefect deployment build flows.flow:marine_flow -n marine_flow -q $PREFECT_QUEUE --apply -o marine_flow-deployment
 
 ENTRYPOINT ["./agent_script.sh $PREFECT_QUEUE"]
 # ENTRYPOINT ["/bin/bash", "-l", "-c"]] 
