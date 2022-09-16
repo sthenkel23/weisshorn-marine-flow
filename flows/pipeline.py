@@ -13,6 +13,13 @@ def call_api(url):
     print(response.status_code)
     return response.json()
 
+@task
+def call_api_backend(item = "bar"):
+    response = requests.get(f"http://weisshorn-backend.herokuapp.com/items/{item}", timeout=10)
+    print(response.status_code)
+    print(response)
+    return response.json()
+
 
 @task
 def get_price(response):
@@ -26,6 +33,7 @@ def marine_flow(url):
     r = call_api(url)
     price = get_price(r)
     printing()
+    call_api_backend("bar")
     return price
 
 
