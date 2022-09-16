@@ -2,6 +2,11 @@
 # https://hub.docker.com/_/python
 FROM python:3.10-slim
 
+RUN apt-get update \
+&& apt-get install -y --no-install-recommends git \
+&& apt-get purge -y --auto-remove \
+&& rm -rf /var/lib/apt/lists/*
+
 # Re scope of ARG/ENV variables:
 # https://docs.docker.com/engine/reference/builder/#using-arg-variables
 ARG PREFECT_API_KEY
@@ -16,7 +21,6 @@ ENV PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID
 ARG PREFECT_QUEUE
 ENV PREFECT_QUEUE=$PREFECT_QUEUE
 
-# ENV PREFECT_API_URL="https://app.prefect.cloud/account/$PREFECT_ACCOUNT_ID/workspace/$PREFECT_WORKSPACE_ID"
 ENV PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE_ID"
 
 # Allow statements and log messages to immediately appear in the Knative logs
