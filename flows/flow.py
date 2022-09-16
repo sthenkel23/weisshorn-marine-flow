@@ -8,7 +8,7 @@ from prefect.run_configs import LocalRun
 FLOW_NAME = "weisshorn-marine-flow-20"
 STORAGE = GitHub(
     repo="sthenkel23/weisshorn-marine-flow",
-    path=f"flows/{FLOW_NAME}.py",
+    path=f"flows/flow.py",
     access_token_secret="GITHUB_ACCESS_TOKEN",  # required with private repositories
 )
 
