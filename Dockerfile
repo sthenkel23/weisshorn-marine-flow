@@ -1,6 +1,11 @@
 # Use the official lightweight Python image.
 # https://hub.docker.com/_/python
-FROM python:3.10
+FROM python:3.10-slim
+
+RUN apt-get update \
+&& apt-get install -y --no-install-recommends git \
+&& apt-get purge -y --auto-remove \
+&& rm -rf /var/lib/apt/lists/*
 
 # Re scope of ARG/ENV variables:
 # https://docs.docker.com/engine/reference/builder/#using-arg-variables
