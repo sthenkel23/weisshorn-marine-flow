@@ -30,9 +30,9 @@ def marine_flow(url):
 
 
 if __name__ == "__main__":
-    if sys.argv[1]:
-        URL = sys.argv[1]
-    else:
-        URL = "https://api.coinbase.com/v2/prices/ETH-USD/spot"
     while True:
+        if sys.argv[1]:
+            URL = sys.argv[1]
+        else:
+            URL = "https://api.coinbase.com/v2/prices/ETH-USD/spot"
         marine_flow(URL)
