@@ -139,7 +139,8 @@ docker:
 	       --build-arg PREFECT_ACCOUNT_ID=${PREFECT_ACCOUNT_ID} \
 	       --build-arg PREFECT_WORKSPACE_ID=${PREFECT_WORKSPACE_ID} \
 		   --build-arg PREFECT_QUEUE=${PREFECT_QUEUE} \
-		   --build-arg FLOW_ENTRYPOINT=${FLOW_ENTRYPOINT}
+		   --build-arg FLOW_ENTRYPOINT=${FLOW_ENTRYPOINT} \
+		   --build-arg APP_NAME=${APP_NAME} \
 		-t $(IMAGE):$(VERSION) . \
 		-f ./Dockerfile --no-cache
 
