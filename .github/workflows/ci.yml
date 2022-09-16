@@ -39,11 +39,12 @@ jobs:
     - name: Download and install poetry
       run: make download-poetry
     
-    - name: Set up cache
-      uses: actions/cache@v2.1.5
-      with:
-        path: ~/.cache/pypoetry/virtualenvs
-        key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+    # - name: Set up cache
+    #   uses: actions/cache@v2.1.5
+    #   with:
+    #     path: ~/.cache/pypoetry/virtualenvs
+    #     key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+
     - name: Set Poetry Path
       run: |
         echo "$HOME/.poetry/bin" >> $GITHUB_PATH
@@ -66,6 +67,11 @@ jobs:
 
     - name: Build the poetry python image
       run: poetry build
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: ./dist
 
     # - name: Create profile
     #   run: |
@@ -101,13 +107,19 @@ jobs:
       with:
         python-version: "3.x"
 
+    - uses: actions/download-artifact@v2
+      with:
+        name: dist
+
     # use the --no-cache-dir flag to skip install files;
     # we don't need those for a one-time docker image build
     - name: Install dependencies
       run: |
+        echo `ls`
         python -m pip install --upgrade pip --no-cache-dir
         pip install -r ./flows/requirements.txt --no-cache-dir
-    
+        pip install ./dist/marine_flow-0.1.0-py3-none-any.whl
+
     - name: Create profile
       run: |
        prefect profile create "profile-$APP_NAME"

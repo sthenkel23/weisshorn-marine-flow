@@ -35,7 +35,7 @@ ENV PYTHONUNBUFFERED True
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 COPY flows/. ./
-COPY dist/. ./
+
 RUN chmod +x ./agent_script.sh
 
 # Install production dependencies.
