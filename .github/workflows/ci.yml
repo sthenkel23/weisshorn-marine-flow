@@ -89,26 +89,24 @@ jobs:
     # - name: Deploy
     #   run: prefect deployment apply ${APP_NAME}-deployment.yaml
       
-  # prefect-deploy:
-  #   needs: test-build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v3
+  prefect-deploy:
+    needs: test-build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
 
-  #   - name: Set up Python 3.x
-  #     uses: actions/setup-python@v4
-  #     with:
-  #       python-version: "3.x"
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
 
     # use the --no-cache-dir flag to skip install files;
     # we don't need those for a one-time docker image build
     - name: Install dependencies
       run: |
-        echo `ls`
         python -m pip install --upgrade pip --no-cache-dir
         pip install -r ./flows/requirements.txt --no-cache-dir
-        pip install ./dist/marine_flow-0.1.0-py3-none-any.whl --upgrade
     
     - name: Create profile
       run: |
@@ -134,8 +132,7 @@ jobs:
         # prefect deployment apply ./${APP_NAME}-deployment.yaml
   
   dockerize:
-    # needs: prefect-deploy
-    needs: test-build
+    needs: prefect-deploy
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -164,8 +161,7 @@ jobs:
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \
                       PREFECT_QUEUE=$PREFECT_QUEUE \
-                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT \ 
-                      APP_NAME=$APP_NAME
+                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT \
 
     - name: Login to Heroku Container registry
       run: heroku container:login
