@@ -140,7 +140,7 @@ docker:
 	       --build-arg PREFECT_WORKSPACE_ID=${PREFECT_WORKSPACE_ID} \
 		   --build-arg PREFECT_QUEUE=${PREFECT_QUEUE} \
 		-t $(IMAGE):$(VERSION) . \
-		-f ./Dockerfile 
+		-f ./Dockerfile --no-cache
 
 # Example: make clean_docker VERSION=latest
 # Example: make clean_docker IMAGE=some_name VERSION=0.1.0

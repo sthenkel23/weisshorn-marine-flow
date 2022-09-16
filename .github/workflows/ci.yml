@@ -127,7 +127,7 @@ jobs:
     # These steps can be done manually for more control over the build process
     - name: Build and Apply Prefect deployments
       run: |
-        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -sb github/$BLOCK_STORAGE -o ${APP_NAME}-deployment.yaml # -t $PREFECT_TAG
+        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -sb github/$BLOCK_STORAGE -o ${APP_NAME}-deployment # -t $PREFECT_TAG
         # prefect deployment apply ./${APP_NAME}-deployment.yaml
   
   dockerize:

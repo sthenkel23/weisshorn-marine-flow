@@ -5,5 +5,4 @@
 # PREFECT_API_URL
 
 echo 'Starting prefect agent now ... '
-prefect work-queue create $1
 prefect agent start -q $1
