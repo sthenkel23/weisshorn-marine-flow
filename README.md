@@ -13,4 +13,11 @@
 
 Enjoy :)!
 
+Github secrets needed:
+- HEROKU_API_KEY
+- HEROKU_APP_NAME
+- PREFECT_ACCOUNT_ID
+- PREFECT_API_KEY
+- PREFECT_WORKSPACE_ID
+
 Feel free to open an issue in case you need additional information.
