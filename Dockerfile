@@ -28,7 +28,7 @@ ENV PYTHONUNBUFFERED True
 # Copy local code to the container image.
 ENV APP_HOME /app
 WORKDIR $APP_HOME
-COPY ./flows .
+COPY flows/. ./
 RUN chmod +x ./agent_script.sh
 
 # Install production dependencies.
@@ -37,7 +37,7 @@ RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
 RUN prefect config set PREFECT_API_URL="$PREFECT_API_URL"
 RUN prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
-RUN echo $PWD
+RUN echo `ls`
 RUN prefect deployment build flows/flow.py:marine_flow -n marine_flow -q $PREFECT_QUEUE --apply -o marine_flow-deployment
 
 ENTRYPOINT ["./agent_script.sh $PREFECT_QUEUE"]
