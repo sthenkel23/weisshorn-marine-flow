@@ -1,9 +1,10 @@
 import sys
 import requests
 from prefect import flow, task
+
 # from marine_flow.data.api import printing
 
-FLOW_NAME="weisshorn-marine-flow-2022"
+FLOW_NAME = "weisshorn-marine-flow-2022"
 
 
 @task
@@ -11,6 +12,7 @@ def call_api(url):
     response = requests.get(url, timeout=10)
     print(response.status_code)
     return response.json()
+
 
 @task
 def get_price(response):

@@ -140,7 +140,8 @@ jobs:
     # These steps can be done manually for more control over the build process
     - name: Build and Apply Prefect deployments
       run: |
-        prefect deployment build ./flows/$FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
+        cd flows/
+        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
         # prefect deployment apply ./${APP_NAME}-deployment.yaml
   
   dockerize:
@@ -178,7 +179,7 @@ jobs:
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \
                       PREFECT_QUEUE=$PREFECT_QUEUE \
-                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT \
+                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT
 
     - name: Login to Heroku Container registry
       run: heroku container:login
