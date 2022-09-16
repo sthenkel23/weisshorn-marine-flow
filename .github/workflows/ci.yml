@@ -118,7 +118,7 @@ jobs:
         echo `ls`
         python -m pip install --upgrade pip --no-cache-dir
         pip install -r ./flows/requirements.txt --no-cache-dir
-        pip install ./dist/marine_flow-0.1.0-py3-none-any.whl
+        pip install marine_flow-0.1.0-py3-none-any.whl
 
     - name: Create profile
       run: |

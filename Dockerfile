@@ -35,6 +35,7 @@ ENV PYTHONUNBUFFERED True
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 COPY flows/. ./
+COPY marine_flow-0.1.0-py3-none-any.whl .
 
 RUN chmod +x ./agent_script.sh
 
