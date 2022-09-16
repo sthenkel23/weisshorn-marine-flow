@@ -13,8 +13,9 @@ def call_api(url):
     print(response.status_code)
     return response.json()
 
+
 @task
-def call_api_backend(item = "bar"):
+def call_api_backend(item="bar"):
     response = requests.get(f"http://weisshorn-backend.herokuapp.com/items/{item}", timeout=10)
     print(response.status_code)
     print(response)
