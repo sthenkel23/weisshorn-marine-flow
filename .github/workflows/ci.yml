@@ -107,6 +107,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip --no-cache-dir
         pip install -r ./flows/requirements.txt --no-cache-dir
+        pip install ./dist/marine_flow-0.1.0-py3-none-any --upgrade
     
     - name: Create profile
       run: |
@@ -161,7 +162,8 @@ jobs:
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \
                       PREFECT_QUEUE=$PREFECT_QUEUE \
-                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT
+                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT \ 
+                      APP_NAME=$APP_NAME
 
     - name: Login to Heroku Container registry
       run: heroku container:login
