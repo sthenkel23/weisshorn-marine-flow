@@ -1,12 +1,9 @@
 import sys
 import requests
 from prefect import flow, task
-# from prefect.filesystems import GitHub
 
 
-# block = GitHub(repository="https://github.com/sthenkel23/weisshorn-marine-flow")
-# block.get_directory("prefect-block") # specify a subfolder of repo
-# block.save("github-storage-dev")
+FLOW_NAME="weisshorn-marine-flow-2022"
 
 
 @task
@@ -22,7 +19,7 @@ def get_price(response):
     return r["amount"]
 
 
-@flow(name="weisshorn-marine-flow-20")
+@flow(name=f"{FLOW_NAME}")
 def marine_flow(url):
     r = call_api(url)
     price = get_price(r)
