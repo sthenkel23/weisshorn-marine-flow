@@ -105,9 +105,10 @@ jobs:
     # we don't need those for a one-time docker image build
     - name: Install dependencies
       run: |
+        echo `ls`
         python -m pip install --upgrade pip --no-cache-dir
         pip install -r ./flows/requirements.txt --no-cache-dir
-        pip install ./dist/marine_flow-0.1.0-py3-none-any --upgrade
+        pip install ./dist/marine_flow-0.1.0-py3-none-any.whl --upgrade
     
     - name: Create profile
       run: |
