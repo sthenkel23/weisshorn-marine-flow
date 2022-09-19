@@ -20,6 +20,7 @@ env:
   # DOCKER_REGISTRY: weisshorn/marine
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+  HEROKU_API_NAME: ${{ secrets.HEROKU_API_NAME }}
   VERSION: latest
   BLOCK_STORAGE: github-storage
 
@@ -179,6 +180,7 @@ jobs:
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \
                       PREFECT_QUEUE=$PREFECT_QUEUE \
+                      HEROKU_API_NAME=$HEROKU_API_NAME \
                       FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT
 
     - name: Login to Heroku Container registry
