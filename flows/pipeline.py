@@ -5,7 +5,7 @@ from prefect import flow, task
 
 from marine_flow.data.api import printing
 
-FLOW_NAME = "weisshorn-marine-flow-3022"
+FLOW_NAME = "weisshorn-marine-flow-3000"
 
 
 @task
@@ -46,7 +46,7 @@ def marine_flow(url):
     r = call_api(url)
     price = get_price(r)
     printing()
-    item = {"name": "Bar52", "description": "Epic stuff", "price": 620, "tax": 2.2}
+    item = {"name": "Bar55", "description": "Epic stuff", "price": 620, "tax": 2.2}
     post_api_backend(item)
     call_api_backend("bar")
     return price
