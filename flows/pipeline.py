@@ -1,3 +1,4 @@
+import os
 import sys
 import requests
 from prefect import flow, task
@@ -16,7 +17,7 @@ def call_api(url):
 
 @task
 def call_api_backend(item="bar"):
-    response = requests.get(f"http://weisshorn-backend.herokuapp.com/items/{item}",timeout=10)
+    response = requests.get(f"{os.environ['HEROKU_API_NAME']}/items/{item}",timeout=10)
     print(response.status_code)
     print(response.json())
     return response.json()
