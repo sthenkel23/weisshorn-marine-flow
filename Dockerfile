@@ -26,6 +26,9 @@ ENV FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT
 ARG APP_NAME
 ENV APP_NAME=$APP_NAME
 
+ARG HEROKU_API_NAME
+ENV HEROKU_API_NAME=$HEROKU_API_NAME
+
 ENV PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE_ID"
 
 # Allow statements and log messages to immediately appear in the Knative logs
@@ -44,6 +47,7 @@ RUN chmod +x ./agent_script.sh
 RUN pip install --upgrade pip --no-cache-dir
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install marine_flow-0.1.0-py3-none-any.whl --upgrade
+# RUN prefect profile use "profile-$APP_NAME"
 RUN prefect config set PREFECT_API_URL="$PREFECT_API_URL"
 RUN prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
 RUN prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-deployment

@@ -20,6 +20,7 @@ env:
   # DOCKER_REGISTRY: weisshorn/marine
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+  HEROKU_API_NAME: ${{ secrets.HEROKU_API_NAME }}
   VERSION: latest
   BLOCK_STORAGE: github-storage
 
@@ -131,6 +132,7 @@ jobs:
         prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE_ID"
         prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
 
+
     #- name: Login to Prefect Cloud
     #  run: prefect cloud login -k $PREFECT_API_KEY -w $PREFECT_WORKSPACE
     
@@ -163,6 +165,7 @@ jobs:
     - name: Set environment var needed for Docker
       run: |         
           echo "IMAGE=registry.heroku.com/$HEROKU_APP_NAME/worker" >> $GITHUB_ENV 
+          echo "HEROKU_API_NAME=$HEROKU_API_NAME" >> $GITHUB_ENV
     
     # - name: Login to DockerHub
     #   uses: docker/login-action@v2
@@ -175,6 +178,7 @@ jobs:
           # export VERSION=$VERSION
           # docker-compose build
           make docker IMAGE=${{ env.IMAGE }} VERSION=$VERSION \
+                      HEROKU_API_NAME=${{ env.HEROKU_API_NAME }} \
                       PREFECT_API_KEY=$PREFECT_API_KEY \
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \

@@ -141,6 +141,7 @@ docker:
 		   --build-arg PREFECT_QUEUE=${PREFECT_QUEUE} \
 		   --build-arg FLOW_ENTRYPOINT=${FLOW_ENTRYPOINT} \
 		   --build-arg APP_NAME=${APP_NAME} \
+		   --build-arg HEROKU_API_NAME=${HEROKU_API_NAME} \
 		-t $(IMAGE):$(VERSION) . \
 		-f ./Dockerfile --no-cache
 
