@@ -17,6 +17,7 @@ def call_api(url):
 
 @task
 def call_api_backend(item="bar"):
+    print(os.system('echo $PWD; echo $HEROKU_API_NAME'))
     response = requests.get(f"{os.environ['HEROKU_API_NAME']}/items/{item}",timeout=10)
     print(response.status_code)
     print(response.json())
