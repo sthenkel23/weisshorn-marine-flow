@@ -26,6 +26,9 @@ ENV FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT
 ARG APP_NAME
 ENV APP_NAME=$APP_NAME
 
+ARG HEROKU_API_NAME
+ENV HEROKU_API_NAME=$HEROKU_API_NAME
+
 ENV PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE_ID"
 
 # Allow statements and log messages to immediately appear in the Knative logs
