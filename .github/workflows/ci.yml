@@ -131,6 +131,8 @@ jobs:
       run:  |
         prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE_ID"
         prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
+        prefect config set HEROKU_API_NAME="$HEROKU_API_NAME"
+
 
     #- name: Login to Prefect Cloud
     #  run: prefect cloud login -k $PREFECT_API_KEY -w $PREFECT_WORKSPACE
