@@ -14,16 +14,6 @@ def call_api(url):
     print(response.status_code)
     return response.json()
 
-
-@task
-def call_api_backend(item="bar"):
-    print(os.system('echo $PWD; echo $HEROKU_API_NAME'))
-    response = requests.get(f"{os.environ['HEROKU_API_NAME']}/items/{item}",timeout=10)
-    print(response.status_code)
-    print(response.json())
-    return response.json()
-
-
 @task
 def post_api_backend(item):
     try:
@@ -47,7 +37,7 @@ def marine_flow(url):
     r = call_api(url)
     price = get_price(r)
     printing()
-    item = {"name": "Bar100", "description": "Epic stuff", "price": 620, "tax": 2.2}
+    item = {"name": "Bar10000", "description": "Epic stuff", "price": 620, "tax": 2.2}
     post_api_backend(item)
     call_api_backend("bar")
     return price
