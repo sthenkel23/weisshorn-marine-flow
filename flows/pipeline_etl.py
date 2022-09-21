@@ -51,7 +51,6 @@ def post_api_backend(df) -> pd.DataFrame:
         raise SystemExit(e)
 
 
-
 @flow(name=f"{FLOW_NAME}")
 def etl_flow(url):
     """_summary_

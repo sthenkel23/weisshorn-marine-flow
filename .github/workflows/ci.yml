@@ -180,7 +180,7 @@ jobs:
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \
                       PREFECT_QUEUE=$PREFECT_QUEUE \
                       FLOW_ENTRYPOINT_ETL=$FLOW_ENTRYPOINT_ETL \ 
-                      FLOW_ENTRYPOINT_ML=$FLOW_ENTRYPOINT_ML \ 
+                      FLOW_ENTRYPOINT_ML=$FLOW_ENTRYPOINT_ML 
 
     - name: Login to Heroku Container registry
       run: heroku container:login
