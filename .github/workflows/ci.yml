@@ -147,8 +147,8 @@ jobs:
     - name: Build and Apply Prefect deployments
       run: |
         cd flows/
-        prefect deployment build $FLOW_ENTRYPOINT_ETL -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-etl-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
-        prefect deployment build $FLOW_ENTRYPOINT_ML -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-ml-deployment
+        prefect deployment build $FLOW_ENTRYPOINT_ETL -n $APP_NAME-etl -q $PREFECT_QUEUE --apply -o ${APP_NAME}-etl-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
+        prefect deployment build $FLOW_ENTRYPOINT_ML -n $APP_NAME-ml -q $PREFECT_QUEUE --apply -o ${APP_NAME}-ml-deployment
   
   dockerize:
     needs: prefect-deploy
