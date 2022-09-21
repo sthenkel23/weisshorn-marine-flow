@@ -2,64 +2,48 @@ import os
 import sys
 import requests
 import pandas as pd
+from datetime import datetime
 from prefect import flow, task
 
-from marine_flow.data.api import printing
-
-FLOW_NAME = "weisshorn-marine-flow-5000"
+FLOW_NAME = "weisshorn-marine-flow-get-prices-time"
 
 
 @task
-def call_api(url):
-    response = requests.get(url, timeout=10)
-    print(response.status_code)
-    return response.json()
-
-
-@task
-def post_api_backend(item) -> pd.DataFrame:
+def call_api(
+    url: str = "https://api.coinbase.com/v2/prices/ETH-USD", price: str = "spot"
+) -> pd.DataFrame:
     try:
-        r = requests.post(f"{os.environ['HEROKU_API_NAME']}/items/", json=item)
+        r = requests.get(f"{url}/{price}", timeout=10)
         print(r.status_code)
-        print(r.json())
-        return pd.DataFrame.from_dict([r.json()])
+        r = r.json()["data"]
+        r["timestamp"] = str(datetime.utcnow())
+        return pd.DataFrame.from_dict([r])
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
 
 
 @task
-def call_api_backend(item="bar") -> pd.DataFrame:
+def post_api_backend(df) -> pd.DataFrame:
+    d = df.to_dict(orient='records')[0]
     try:
-        r = requests.get(f"{os.environ['HEROKU_API_NAME']}/items/{item}", timeout=10)
+        r = requests.post(f"{os.environ['HEROKU_API_NAME']}/api_prices/", json=d)
         print(r.status_code)
-        print(r.json())
         return pd.DataFrame.from_dict([r.json()])
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
-
-
-@task
-def get_price(response):
-    r = response["data"]
-    print(r["amount"])
-    return r["amount"]
 
 
 @flow(name=f"{FLOW_NAME}")
 def marine_flow(url):
-    r = call_api(url)
-    price = get_price(r)
-    printing()
-    item = {"name": "Bar10000", "description": "Epic stuff", "price": 620, "tax": 2.2}
-    df = post_api_backend(item)
-    print(f"\n\n\n{df.describe}")
-    call_api_backend("bar")
-    return price
+    df = call_api(url)
+    df = post_api_backend(df)
+    return df
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         URL = sys.argv[1]
     else:
-        URL = "https://api.coinbase.com/v2/prices/ETH-USD/spot"
+        URL = "https://api.coinbase.com/v2/prices/ETH-USD"
+
     marine_flow(URL)
