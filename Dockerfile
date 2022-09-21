@@ -56,7 +56,4 @@ RUN prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
 RUN prefect deployment build $FLOW_ENTRYPOINT_ETL -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-etl-deployment
 RUN prefect deployment build $FLOW_ENTRYPOINT_ML -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-ml-deployment
 
-
 ENTRYPOINT ["./agent_script.sh $PREFECT_QUEUE"]
-# ENTRYPOINT ["/bin/bash", "-l", "-c"]] 
-# CMD ["/agent_script.sh", "$PREFECT_QUEUE"] 
