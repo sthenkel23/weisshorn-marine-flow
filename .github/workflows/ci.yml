@@ -16,7 +16,9 @@ env:
   PREFECT_QUEUE: dev
   PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
-  FLOW_ENTRYPOINT: pipeline:marine_flow
+  FLOW_ENTRYPOINT_ETL: pipeline_etl:etl_flow
+  FLOW_ENTRYPOINT_ETL: pipeline_ml:ml_training_flow
+
   # DOCKER_REGISTRY: weisshorn/marine
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
@@ -143,7 +145,7 @@ jobs:
     - name: Build and Apply Prefect deployments
       run: |
         cd flows/
-        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
+        prefect deployment build $FLOW_ENTRYPOINT_ETL -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-etl-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
         # prefect deployment apply ./${APP_NAME}-deployment.yaml
   
   dockerize:
@@ -183,7 +185,8 @@ jobs:
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \
                       PREFECT_QUEUE=$PREFECT_QUEUE \
-                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT
+                      FLOW_ENTRYPOINT_ETL=$FLOW_ENTRYPOINT_ETL \ 
+                      FLOW_ENTRYPOINT_ML=$FLOW_ENTRYPOINT_ML \ 
 
     - name: Login to Heroku Container registry
       run: heroku container:login

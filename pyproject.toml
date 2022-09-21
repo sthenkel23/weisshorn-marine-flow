@@ -26,7 +26,8 @@ pytest-cov = "^3.0.0"
 
 
 [tool.poetry.scripts]
-marine-flow = "flows.flow:marine_flow"
+marine-etl-flow = "flows.pipeline_etl:etl_flow"
+marine-ml-flow = "flows.pipeline_ml:ml_training_flow"
 
 
 [build-system]

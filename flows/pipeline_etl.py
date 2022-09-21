@@ -12,6 +12,16 @@ FLOW_NAME = "weisshorn-marine-flow-get-prices-time"
 def call_api(
     url: str = "https://api.coinbase.com/v2/prices/ETH-USD", price: str = "spot"
 ) -> pd.DataFrame:
+    """_summary_
+
+    :param url: _description_, defaults to "https://api.coinbase.com/v2/prices/ETH-USD"
+    :type url: _type_, optional
+    :param price: _description_, defaults to "spot"
+    :type price: str, optional
+    :raises SystemExit: _description_
+    :return: _description_
+    :rtype: pd.DataFrame
+    """
     try:
         r = requests.get(f"{url}/{price}", timeout=10)
         print(r.status_code)
@@ -24,6 +34,14 @@ def call_api(
 
 @task
 def post_api_backend(df) -> pd.DataFrame:
+    """_summary_
+
+    :param df: _description_
+    :type df: _type_
+    :raises SystemExit: _description_
+    :return: _description_
+    :rtype: pd.DataFrame
+    """
     d = df.to_dict(orient='records')[0]
     try:
         r = requests.post(f"{os.environ['HEROKU_API_NAME']}/api_prices/", json=d)
@@ -34,7 +52,14 @@ def post_api_backend(df) -> pd.DataFrame:
 
 
 @flow(name=f"{FLOW_NAME}")
-def marine_flow(url):
+def etl_flow(url):
+    """_summary_
+
+    :param url: _description_
+    :type url: _type_
+    :return: _description_
+    :rtype: _type_
+    """
     df = call_api(url)
     df = post_api_backend(df)
     return df
@@ -46,4 +71,4 @@ if __name__ == "__main__":
     else:
         URL = "https://api.coinbase.com/v2/prices/ETH-USD"
 
-    marine_flow(URL)
+    etl_flow(URL)
