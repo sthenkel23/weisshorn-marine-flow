@@ -23,6 +23,8 @@ env:
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
   HEROKU_API_NAME: ${{ secrets.HEROKU_API_NAME }}
+
+  FIREBASE_API_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
   VERSION: latest
   BLOCK_STORAGE: github-storage
 
@@ -168,6 +170,7 @@ jobs:
       run: |         
           echo "IMAGE=registry.heroku.com/$HEROKU_APP_NAME/worker" >> $GITHUB_ENV 
           echo "HEROKU_API_NAME=$HEROKU_API_NAME" >> $GITHUB_ENV
+          echo $FIREBASE_API_KEY > gcl.json
 
     - name: Build the Docker images
       run: |
