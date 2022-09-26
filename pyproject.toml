@@ -7,11 +7,12 @@ readme = "README.md"
 packages = [{include = "marine_flow", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.12"
 requests = "^2.28.1"
 greenlet = "*"
 google-cloud-firestore = "^2.7.0"
 torch = "^1.12.1"
+gpytorch = "^1.9.0"
 
 [tool.poetry.group.dev.dependencies]
 darglint = "^1.8.1"
