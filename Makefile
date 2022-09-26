@@ -139,8 +139,10 @@ docker:
 	       --build-arg PREFECT_ACCOUNT_ID=${PREFECT_ACCOUNT_ID} \
 	       --build-arg PREFECT_WORKSPACE_ID=${PREFECT_WORKSPACE_ID} \
 		   --build-arg PREFECT_QUEUE=${PREFECT_QUEUE} \
-		   --build-arg FLOW_ENTRYPOINT=${FLOW_ENTRYPOINT} \
+		   --build-arg FLOW_ENTRYPOINT_ETL=${FLOW_ENTRYPOINT_ETL} \
+		   --build-arg FLOW_ENTRYPOINT_ML=${FLOW_ENTRYPOINT_ML} \
 		   --build-arg APP_NAME=${APP_NAME} \
+		   --build-arg HEROKU_API_NAME=${HEROKU_API_NAME} \
 		-t $(IMAGE):$(VERSION) . \
 		-f ./Dockerfile --no-cache
 

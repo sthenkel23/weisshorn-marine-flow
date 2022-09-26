@@ -16,10 +16,15 @@ env:
   PREFECT_QUEUE: dev
   PREFECT_TAG: etl
   PREFECT_ACCOUNT_ID: ${{ secrets.PREFECT_ACCOUNT_ID }}
-  FLOW_ENTRYPOINT: pipeline:marine_flow
+  FLOW_ENTRYPOINT_ETL: pipeline_etl:etl_flow
+  FLOW_ENTRYPOINT_ML: pipeline_ml:ml_training_flow
+
   # DOCKER_REGISTRY: weisshorn/marine
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+  HEROKU_API_NAME: ${{ secrets.HEROKU_API_NAME }}
+
+  FIREBASE_API_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
   VERSION: latest
   BLOCK_STORAGE: github-storage
 
@@ -131,6 +136,7 @@ jobs:
         prefect config set PREFECT_API_URL="https://api.prefect.cloud/api/accounts/$PREFECT_ACCOUNT_ID/workspaces/$PREFECT_WORKSPACE_ID"
         prefect config set PREFECT_API_KEY="$PREFECT_API_KEY"
 
+
     #- name: Login to Prefect Cloud
     #  run: prefect cloud login -k $PREFECT_API_KEY -w $PREFECT_WORKSPACE
     
@@ -141,8 +147,8 @@ jobs:
     - name: Build and Apply Prefect deployments
       run: |
         cd flows/
-        prefect deployment build $FLOW_ENTRYPOINT -n $APP_NAME -q $PREFECT_QUEUE --apply -o ${APP_NAME}-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
-        # prefect deployment apply ./${APP_NAME}-deployment.yaml
+        prefect deployment build $FLOW_ENTRYPOINT_ETL -n $APP_NAME-etl -q $PREFECT_QUEUE --apply -o ${APP_NAME}-etl-deployment # -sb github/$BLOCK_STORAGE # -t $PREFECT_TAG
+        prefect deployment build $FLOW_ENTRYPOINT_ML -n $APP_NAME-ml -q $PREFECT_QUEUE --apply -o ${APP_NAME}-ml-deployment
   
   dockerize:
     needs: prefect-deploy
@@ -163,23 +169,19 @@ jobs:
     - name: Set environment var needed for Docker
       run: |         
           echo "IMAGE=registry.heroku.com/$HEROKU_APP_NAME/worker" >> $GITHUB_ENV 
-    
-    # - name: Login to DockerHub
-    #   uses: docker/login-action@v2
-    #   with:
-    #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+          echo "HEROKU_API_NAME=$HEROKU_API_NAME" >> $GITHUB_ENV
+          echo $FIREBASE_API_KEY > ./flows/gcl.json
 
     - name: Build the Docker images
       run: |
-          # export VERSION=$VERSION
-          # docker-compose build
           make docker IMAGE=${{ env.IMAGE }} VERSION=$VERSION \
+                      HEROKU_API_NAME=${{ env.HEROKU_API_NAME }} \
                       PREFECT_API_KEY=$PREFECT_API_KEY \
                       PREFECT_ACCOUNT_ID=$PREFECT_ACCOUNT_ID \
                       PREFECT_WORKSPACE_ID=$PREFECT_WORKSPACE_ID \
                       PREFECT_QUEUE=$PREFECT_QUEUE \
-                      FLOW_ENTRYPOINT=$FLOW_ENTRYPOINT
+                      FLOW_ENTRYPOINT_ETL=$FLOW_ENTRYPOINT_ETL \
+                      FLOW_ENTRYPOINT_ML=$FLOW_ENTRYPOINT_ML 
 
     - name: Login to Heroku Container registry
       run: heroku container:login
