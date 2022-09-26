@@ -4,7 +4,7 @@ import pandas as pd
 
 from prefect import flow, task
 from google.cloud import firestore
-from marine_flow.models.utils import train_test_split
+from marine_flow.models.gp_reg_singletask import fill_response
 
 
 FLOW_NAME = "weisshorn-marine-flow-ml-train"
@@ -30,9 +30,8 @@ def transform(df) -> pd.DataFrame:
 @task
 def split(df) -> pd.DataFrame:
     split_num = int(len(df.index)*0.8)
-    #df_train = df[:split_num]
-    #df_val = df[split_num:len(df.index)]
-    df_train, df_test = train_test_split(df, split_num)
+    df_train = df[:split_num]
+    df_test = df[split_num:len(df.index)]
     return df_train, df_test
 
 @task
@@ -52,9 +51,9 @@ def val(model, ckp, df_val):
 def ml_training_flow():
     df = retrieve_data(document="prices")
     df = transform(df)
-    df_train, df_val = split(df)
+    df_train, df_test = split(df)
     model, ckp = train(df_train)
-    metric = val(model, ckp, val)
+    metric = val(model, ckp, df_test)
 
     return df
 
